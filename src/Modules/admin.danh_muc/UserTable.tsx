@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import{ useEffect, useState } from 'react';
 import { TableBase } from '../../Components/TableCp/TableBase';
 import axios from 'axios';
-import { Button, Form, Input } from 'antd';
+import { Button } from 'antd';
 
 interface User {
   id: string;

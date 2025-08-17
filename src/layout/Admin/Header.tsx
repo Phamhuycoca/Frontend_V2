@@ -1,5 +1,5 @@
-import { Avatar, Badge, Col, Layout, Row, theme } from 'antd';
-import Icon, { BellOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Badge, Layout, Row, theme } from 'antd';
+import{ BellOutlined, UserOutlined } from '@ant-design/icons';
 const { Header } = Layout;
 
 export const AdminHeader = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -6,7 +6,7 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
-import { Button, Image, Layout, Menu } from 'antd';
+import {  Image, Layout, Menu } from 'antd';
 
 const { Sider } = Layout;
 export const AdminSidebar = () => {
