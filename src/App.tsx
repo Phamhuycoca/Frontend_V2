@@ -1,6 +1,5 @@
 import { Button } from 'antd';
 import { useState } from 'react';
-import GridExample from './Components/Agrid/GridExample';
 import { LinkPreview } from './Components/LinkPreview/LinkPreview';
 function App() {
   const [count, setCount] = useState(0);
@@ -14,7 +13,6 @@ function App() {
       <div>VITE: {VITE}</div>
       <div>VITE_API_URL: {import.meta.env.VITE_API_URL}</div>
       <div>VITE_API_KEY: {import.meta.env.VITE_API_KEY}</div>
-      <GridExample />
       {/* <LinkPreview /> */}
       <LinkPreview />
     </>

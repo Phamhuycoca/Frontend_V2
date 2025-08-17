@@ -79,9 +79,7 @@ export const LinkPreview = () => {
               >
                 {meta.title || 'Không có tiêu đề'}
               </a>
-              <p className="text-sm text-gray-600 line-clamp-2">
-                {meta.description || 'Không có mô tả'}
-              </p>
+              <p className="text-sm text-gray-600 line-clamp-2">{meta.description || 'Không có mô tả'}</p>
             </div>
           </div>
         )}
