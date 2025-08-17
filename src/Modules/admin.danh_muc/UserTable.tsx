@@ -54,6 +54,7 @@ const UserTable = () => {
 
   return (
     <TableBase<User>
+      isLoading={loading}
       isSearch={true}
       page={page}
       page_size={pageSize}
