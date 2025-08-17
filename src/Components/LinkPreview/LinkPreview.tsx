@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
-import type { LinkMeta } from "./LinkMete";
-import { Input, Spin } from "antd";
+import React, { useState, useRef } from 'react';
+import type { LinkMeta } from './LinkMete';
+import { Input, Spin } from 'antd';
 
 export const LinkPreview = () => {
   const urlApi = import.meta.env.VITE_API_KEY_LINK_PREVIEW;
@@ -9,8 +9,8 @@ export const LinkPreview = () => {
   const abortRef = useRef<AbortController | null>(null);
 
   const handlePaste = async (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    const pastedText = e.clipboardData.getData("text");
-    if (!pastedText.startsWith("http")) return;
+    const pastedText = e.clipboardData.getData('text');
+    if (!pastedText.startsWith('http')) return;
 
     // Hủy request trước nếu có
     if (abortRef.current) {
@@ -34,8 +34,8 @@ export const LinkPreview = () => {
         url: data.url,
       });
     } catch (err) {
-      if ((err as any).name !== "AbortError") {
-        console.error("Lỗi lấy metadata:", err);
+      if ((err as any).name !== 'AbortError') {
+        console.error('Lỗi lấy metadata:', err);
         setMeta(null);
       }
     } finally {
@@ -50,7 +50,7 @@ export const LinkPreview = () => {
         onPaste={handlePaste}
         onChange={(e) => {
           const value = e.target.value;
-          if (!value.startsWith("http")) {
+          if (!value.startsWith('http')) {
             setMeta(null);
           }
         }}
@@ -66,7 +66,7 @@ export const LinkPreview = () => {
                 alt={meta.title}
                 className="w-20 h-20 object-cover rounded"
                 onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                  (e.currentTarget as HTMLImageElement).style.display = 'none';
                 }}
               />
             )}
@@ -77,10 +77,10 @@ export const LinkPreview = () => {
                 rel="noopener noreferrer"
                 className="font-bold text-blue-600 hover:underline"
               >
-                {meta.title || "Không có tiêu đề"}
+                {meta.title || 'Không có tiêu đề'}
               </a>
               <p className="text-sm text-gray-600 line-clamp-2">
-                {meta.description || "Không có mô tả"}
+                {meta.description || 'Không có mô tả'}
               </p>
             </div>
           </div>
