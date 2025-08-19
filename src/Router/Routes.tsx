@@ -1,6 +1,7 @@
 import type { RouteConfig } from '../Common/interface';
 import AdminModule from '../layout/Admin/Module';
-import { DanhMucListCp } from '../Modules/admin.danh_muc/DanhMucListCp';
+import { DanhMucModule } from '../Modules/admin.danh_muc/DanhMucModule';
+import NoutFountPage from '../shared/page/NoutFound';
 
 export const routes: RouteConfig[] = [
   {
@@ -9,10 +10,14 @@ export const routes: RouteConfig[] = [
     element: <AdminModule />,
     children: [
       {
-        path: 'danh-muc',
+        path: 'danh-muc/*',
         protected: false,
-        element: <DanhMucListCp />,
+        element: <DanhMucModule />,
       },
     ],
+  },
+  {
+    path: '*',
+    element: <NoutFountPage />,
   },
 ];

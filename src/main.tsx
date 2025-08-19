@@ -14,15 +14,15 @@ createRoot(document.getElementById('root')!).render(
         <Router>
           <Routes>
             {routes.map((route) => {
-              if (route.children) {
-                return (
-                  <Route key={route.path} path={route.path} element={route.element}>
-                    {route.children.map((childRoute) => (
-                      <Route key={childRoute.path} path={childRoute.path} element={childRoute.element} />
-                    ))}
-                  </Route>
-                );
-              }
+                if (route.children) {
+                  return (
+                    <Route key={route.path} path={route.path} element={route.element}>
+                      {route.children.map((childRoute) => (
+                        <Route key={childRoute.path} path={childRoute.path} element={childRoute.element} />
+                      ))}
+                    </Route>
+                  );
+                }
               return <Route key={route.path} path={route.path} element={route.element} />;
             })}
           </Routes>
