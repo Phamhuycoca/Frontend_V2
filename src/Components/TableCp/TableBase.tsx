@@ -9,6 +9,7 @@ import {
   Row,
   Select,
   Space,
+  Spin,
   Table,
   TreeSelect,
   type TableProps,
@@ -22,7 +23,8 @@ interface PropTable<T> extends TableProps<T> {
   sort?: string;
   search?: string;
   total: number;
-  isSearch?: Boolean;
+  isSearch?: boolean;
+  isLoading: boolean;
   ActionButton?: ReactNode;
   arrFilterForm?: FilterForm[];
   onChangeTable?: (params: {
@@ -42,8 +44,19 @@ interface FilterForm {
 }
 
 export const TableBase = <T extends object>(props: PropTable<T>) => {
-  const { page, page_size, columns, dataSource, total, onChangeTable, isSearch, ActionButton, arrFilterForm, ...rest } =
-    props;
+  const {
+    page,
+    page_size,
+    columns,
+    dataSource,
+    total,
+    onChangeTable,
+    isLoading,
+    isSearch,
+    ActionButton,
+    arrFilterForm,
+    ...rest
+  } = props;
   const [isShowFilter, setIsShowFilter] = useState<Boolean>(false);
   return (
     <>
@@ -175,34 +188,36 @@ export const TableBase = <T extends object>(props: PropTable<T>) => {
           )}
         </>
       )}
-      <Table<T>
-        columns={columns}
-        dataSource={dataSource}
-        pagination={{
-          current: page,
-          pageSize: page_size,
-          total: total,
-          showSizeChanger: true,
-          showTotal: (total, range) => `${range[0]}-${range[1]} của ${total} bản ghi`,
-        }}
-        rowKey={(record: any) => record.id || JSON.stringify(record)}
-        onChange={(pagination, filters, sorter) => {
-          let sort: string | undefined = undefined;
+      <Spin spinning={isLoading}>
+        <Table<T>
+          columns={columns}
+          dataSource={dataSource}
+          pagination={{
+            current: page,
+            pageSize: page_size,
+            total: total,
+            showSizeChanger: true,
+            showTotal: (total, range) => `${range[0]}-${range[1]} của ${total} bản ghi`,
+          }}
+          rowKey={(record: any) => record.id || JSON.stringify(record)}
+          onChange={(pagination, filters, sorter) => {
+            let sort: string | undefined = undefined;
 
-          if (!Array.isArray(sorter) && sorter.field && sorter.order) {
-            const order = sorter.order === 'ascend' ? 0 : 1;
-            sort = `{"${sorter.field}":${order}}`;
-          }
+            if (!Array.isArray(sorter) && sorter.field && sorter.order) {
+              const order = sorter.order === 'ascend' ? 0 : 1;
+              sort = `{"${sorter.field}":${order}}`;
+            }
 
-          onChangeTable?.({
-            page: pagination.current || 1,
-            pageSize: pagination.pageSize || 20,
-            sort,
-            filters,
-          });
-        }}
-        {...rest}
-      />
+            onChangeTable?.({
+              page: pagination.current || 1,
+              pageSize: pagination.pageSize || 20,
+              sort,
+              filters,
+            });
+          }}
+          {...rest}
+        />
+      </Spin>
     </>
   );
 };
