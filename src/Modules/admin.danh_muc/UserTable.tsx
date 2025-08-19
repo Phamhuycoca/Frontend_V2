@@ -1,7 +1,12 @@
-import{ useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TableBase } from '../../Components/TableCp/TableBase';
 import axios from 'axios';
 import { Button } from 'antd';
+import { CreateButton } from '../../Components/Button/CreateButton';
+import { EditButton } from '../../Components/Button/EditButton';
+import { DeleteButton } from '../../Components/Button/DeleteButton';
+import { SaveButton } from '../../Components/Button/SaveButton';
+import { CommonButton } from '../../Components/Button/CommonButton';
 
 interface User {
   id: string;
@@ -64,7 +69,11 @@ const UserTable = () => {
       loading={loading}
       ActionButton={
         <>
-          <Button>Thêm mới</Button>
+          <CreateButton />
+          <EditButton />
+          <DeleteButton />
+          <SaveButton />
+          <CommonButton text='Thêm mới'/>
           <Button>Thêm mới</Button>
           <Button>Thêm mới</Button>
         </>
@@ -102,7 +111,7 @@ const UserTable = () => {
             { label: 'Danh mục B', value: 'b' },
           ],
         },
-          { label: "Đã duyệt", name: "approved", type: "checkbox" },
+        { label: 'Đã duyệt', name: 'approved', type: 'checkbox' },
       ]}
       onChangeTable={({ page, pageSize, sort, filters, search }) => {
         console.log('filters', filters);
