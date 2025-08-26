@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
 import { TableBase } from '../../Components/TableCp/TableBase';
-import axios from 'axios';
 import { Button } from 'antd';
 import { CreateButton } from '../../Components/Button/CreateButton';
 import { EditButton } from '../../Components/Button/EditButton';
 import { DeleteButton } from '../../Components/Button/DeleteButton';
 import { SaveButton } from '../../Components/Button/SaveButton';
 import { CommonButton } from '../../Components/Button/CommonButton';
-
+import DanhMucService from './Service';
 interface User {
   id: string;
-  username: string;
-  password: string;
-  role: string | null;
+  ten: string;
+  icon: string;
+  duong_dan: string | null;
 }
 
 const UserTable = () => {
@@ -27,19 +26,15 @@ const UserTable = () => {
   const fetchUsers = async (page: number, pageSize: number) => {
     try {
       setLoading(true);
-      const res = await axios.get('https://localhost:44360/api/User/List', {
-        params: {
+      const res = await DanhMucService.getAll({
           page: page,
           page_size: pageSize,
           key_search: search,
           filter: filter,
           sort: sort,
-        },
-      });
-      console.log('resssss', res);
-
-      setData(res.data.data);
-      setTotal(res.data.total);
+        })
+      setData(res.data);
+      setTotal(res.total||0);
     } catch (err) {
       console.error('Fetch users error:', err);
     } finally {
@@ -53,8 +48,8 @@ const UserTable = () => {
 
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id', sorter: true },
-    { title: 'Username', dataIndex: 'username', key: 'username', sorter: true },
-    { title: 'Role', dataIndex: 'role', key: 'role', render: (r: string | null) => r || 'N/A' },
+    { title: 'ten', dataIndex: 'ten', key: 'ten', sorter: true },
+    { title: 'so_thu_tu', dataIndex: 'so_thu_tu', key: 'so_thu_tu', render: (r: string | null) => r || 'N/A' },
   ];
 
   return (
