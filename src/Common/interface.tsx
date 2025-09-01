@@ -17,15 +17,26 @@ export interface ResponseData<T> {
   filter: string;
   search: string;
 }
-export interface ApiResponse<T> {
+interface MeteResponse{
   page?:number;
   page_size?:number;
   total?:number;
+}
+export interface MetaState {
+  page: number;
+  page_size: number;
+  search: string;
+  sort: string;
+  filter: string;
+}
+export interface ApiResponse<T> {
+  meta?:MeteResponse;
   message: string;
   data: T;
   statusCode: number;
   success: boolean;
 }
+
 export type ItemTree = {
   id: string | number;
   ten: string;

@@ -7,11 +7,12 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import {  Image, Layout, Menu } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const { Sider } = Layout;
 export const AdminSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <Sider trigger={null} collapsible collapsed={collapsed} width={'12%'}>
       <div className="demo-logo-vertical">
@@ -50,12 +51,15 @@ export const AdminSidebar = () => {
           {
             key: '1',
             icon: <UserOutlined />,
+            onClick: () => navigate('/admin/danh-muc'),
             label: 'nav 1',
+            
           },
           {
             key: '2',
             icon: <VideoCameraOutlined />,
             label: 'nav 2',
+            onClick: () => navigate('/admin/nguoi-dung'),
           },
           {
             key: '3',

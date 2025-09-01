@@ -57,7 +57,9 @@ export const TableBase = <T extends object>(props: PropTable<T>) => {
     arrFilterForm,
     ...rest
   } = props;
+
   const [isShowFilter, setIsShowFilter] = useState<Boolean>(false);
+  const [searchValue, setSearchValue] = useState(props.search || '');
   return (
     <>
       {isSearch && (
@@ -68,24 +70,28 @@ export const TableBase = <T extends object>(props: PropTable<T>) => {
                 <Col span={16}>
                   <Search
                     placeholder="Nhập từ khóa để tìm kiếm"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
                     onSearch={(value) => {
                       onChangeTable?.({ page: page, pageSize: page_size, search: value });
                     }}
                   />
                 </Col>
-                <Col span={7} className="ms-3">
-                  <Button
-                    style={{ color: '#4096ff' }}
-                    onClick={() => {
-                      setIsShowFilter(!isShowFilter);
-                    }}
-                    type="text"
-                    icon={isShowFilter ? <UpOutlined /> : <DownOutlined />}
-                    iconPosition="end"
-                  >
-                    {isShowFilter ? 'Thu gọn' : 'Mở rộng'}
-                  </Button>
-                </Col>
+                {arrFilterForm && arrFilterForm?.length > 0 && (
+                  <Col span={7} className="ms-3">
+                    <Button
+                      style={{ color: '#4096ff' }}
+                      onClick={() => {
+                        setIsShowFilter(!isShowFilter);
+                      }}
+                      type="text"
+                      icon={isShowFilter ? <UpOutlined /> : <DownOutlined />}
+                      iconPosition="end"
+                    >
+                      {isShowFilter ? 'Thu gọn' : 'Mở rộng'}
+                    </Button>
+                  </Col>
+                )}
               </Row>
             </Col>
             <Col span={12}>
@@ -97,7 +103,7 @@ export const TableBase = <T extends object>(props: PropTable<T>) => {
           {isShowFilter && (
             <>
               {isShowFilter}
-              {arrFilterForm && (
+              {arrFilterForm && arrFilterForm?.length > 0 && (
                 <>
                   <Form
                     onFinish={(values) => {
@@ -120,7 +126,7 @@ export const TableBase = <T extends object>(props: PropTable<T>) => {
                             break;
 
                           case 'select':
-                            inputComponent = <Select options={field.data} placeholder={`Chọn ${field.label}`}></Select>;
+                            inputComponent = <Select options={field.data} allowClear placeholder={`Chọn ${field.label}`}></Select>;
                             break;
 
                           case 'date':
