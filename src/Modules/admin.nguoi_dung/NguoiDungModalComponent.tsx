@@ -1,7 +1,7 @@
 import { Modal, Form, Row, Col, Input, Select, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import NguoiDungService from './Services';
-import { lstLoaiTaiKhoan, type NguoiDungType } from './Const';
+import { lstGioiTinh, type NguoiDungType } from './Const';
 import { modalAlert } from '../../Common/helpers/Observable';
 type Props = {
   handleClose: () => void;
@@ -17,14 +17,14 @@ export const NguoiDungModalComponent: React.FC<Props> = ({ handleClose }) => {
     const subscription = NguoiDungService.modal$.subscribe((res) => {
       if (res.form) {
         setIsOpen(true);
-      }
-      if (res.data) {
-        setTitle('Thông tin chi chi tiết');
-        fetchDataById(res.data.id);
-      } else {
-        setTitle('Thêm mới thông tin');
-        console.log(data);
-        setData(null);
+        if (res.data) {
+          setTitle('Thông tin chi chi tiết');
+          fetchDataById(res.data.id);
+        } else {
+          setTitle('Thêm mới thông tin');
+          console.log(data);
+          setData(null);
+        }
       }
     });
     return () => subscription.unsubscribe();
@@ -49,7 +49,8 @@ export const NguoiDungModalComponent: React.FC<Props> = ({ handleClose }) => {
             title: 'Thông báo',
             content: 'Cập nhật thông tin thành công!',
           });
-          closed();
+          handleClose();
+          form.resetFields();
         }
       });
     } else {
@@ -60,16 +61,19 @@ export const NguoiDungModalComponent: React.FC<Props> = ({ handleClose }) => {
             title: 'Thông báo',
             content: 'Thêm mới thông tin thành công!',
           });
-          closed();
+          handleClose();
+          form.resetFields();
         }
       });
     }
     setIsOpen(false);
   };
   const closed = () => {
-    handleClose();
+    setIsOpen(false);
     form.resetFields();
+    NguoiDungService.resetModal();
   };
+
   return (
     <>
       <Modal
@@ -79,33 +83,33 @@ export const NguoiDungModalComponent: React.FC<Props> = ({ handleClose }) => {
         onOk={() => {
           form.submit();
         }}
-        okText='Lưu'
+        okText="Lưu"
         cancelText="Đóng"
         onCancel={() => {
-          (setIsOpen(false), form.resetFields());
+          closed();
         }}
       >
         <Spin spinning={isLoading}>
           <Form form={form} onFinish={onFinish}>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item name="ho" label="Họ">
+                <Form.Item name="ho_va_ten" label="Tên đây đủ">
                   <Input />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item name="ten" label="Tên">
+                <Form.Item name="email" label="Email người dùng">
                   <Input />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item name="tai_khoan" label="Tài khoản" rules={[{ required: true }]}>
+                <Form.Item name="anh_dai_dien" label="Ảnh đại diện">
                   <Input />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item name="is_loai_tai_khoan" label="Loại tài khoản">
-                  <Select options={lstLoaiTaiKhoan} />
+                <Form.Item name="gioi_tinh" label="Giới tinh">
+                  <Select options={lstGioiTinh} />
                 </Form.Item>
               </Col>
             </Row>

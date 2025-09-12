@@ -2,12 +2,14 @@ import axios, { type AxiosInstance } from 'axios';
 
 const apiClient: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
-    timeout: 10000,
+    //timeout: 10000,
 });
 
 // Thêm access token vào mỗi request
 apiClient.interceptors.request.use((config) => {
     const token = localStorage.getItem('access_token');
+    console.log('tokennnnnnnn',token);
+    
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }

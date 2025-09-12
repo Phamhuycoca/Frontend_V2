@@ -27,6 +27,6 @@ export function showModalConfirm(title: string, content: string): Promise<boolea
 }
 export const modalAlert = new BehaviorSubject<AlertState>({
   type: 'success',
-  content:'',
-  title:''
+  content: '',
+  title: '',
 });

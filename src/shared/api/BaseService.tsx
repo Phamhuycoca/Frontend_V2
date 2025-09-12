@@ -1,4 +1,4 @@
-import type { ApiResponse } from '../../Common/interface';
+import type { ApiResponse, PagedDataResponse } from '../../Common/interface';
 import apiClient from './apiClient';
 
 class BaseService {
@@ -8,12 +8,17 @@ class BaseService {
     this.endpoint = endpoint;
   }
 
-  async getAll(params?: any): Promise<ApiResponse<any>> {
+  async getAll(params?: any): Promise<PagedDataResponse<any>> {
     try {
-      const res = await apiClient.get<ApiResponse<any>>(this.endpoint, { params });
+      const res = await apiClient.get<PagedDataResponse<any>>(this.endpoint, { params });
       return res.data;
     } catch (error: any) {
-      return this.handleError(error);
+      return {
+        statusCode: error?.response,
+        success: false,
+        message: error?.response?.data?.message || error.message || 'Unknown error',
+        items: null,
+      };
     }
   }
 
@@ -25,7 +30,32 @@ class BaseService {
       return this.handleError(error);
     }
   }
+  async post(url: string = '', data: any): Promise<ApiResponse<any>> {
+    try {
+      const res = await apiClient.post<ApiResponse<any>>(`${this.endpoint}${url ? `/${url}` : ''}`, data);
+      return res.data;
+    } catch (error: any) {
+      return this.handleError(error);
+    }
+  }
 
+  async put(id: string | number, data: any): Promise<ApiResponse<any>> {
+    try {
+      const res = await apiClient.put<ApiResponse<any>>(`${this.endpoint}/${id}`, data);
+      return res.data;
+    } catch (error: any) {
+      return this.handleError(error);
+    }
+  }
+
+  async delete(id: string | number): Promise<ApiResponse<any>> {
+    try {
+      const res = await apiClient.delete<ApiResponse<any>>(`${this.endpoint}/${id}`);
+      return res.data;
+    } catch (error: any) {
+      return this.handleError(error);
+    }
+  }
   async create(data: any): Promise<ApiResponse<any>> {
     try {
       const res = await apiClient.post<ApiResponse<any>>(this.endpoint, data);
@@ -38,15 +68,6 @@ class BaseService {
   async update(id: string | number, data: any): Promise<ApiResponse<any>> {
     try {
       const res = await apiClient.put<ApiResponse<any>>(`${this.endpoint}/${id}`, data);
-      return res.data;
-    } catch (error: any) {
-      return this.handleError(error);
-    }
-  }
-
-  async delete(id: string | number): Promise<ApiResponse<any>> {
-    try {
-      const res = await apiClient.delete<ApiResponse<any>>(`${this.endpoint}/${id}`);
       return res.data;
     } catch (error: any) {
       return this.handleError(error);

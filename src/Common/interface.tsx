@@ -29,14 +29,19 @@ export interface MetaState {
   sort: string;
   filter: string;
 }
-export interface ApiResponse<T> {
+export interface PagedDataResponse<T> {
   meta?:MeteResponse;
+  message: string;
+  items: T;
+  statusCode: number;
+  success: boolean;
+}
+export interface ApiResponse<T> {
   message: string;
   data: T;
   statusCode: number;
   success: boolean;
 }
-
 export type ItemTree = {
   id: string | number;
   ten: string;

@@ -3,6 +3,7 @@ import BreadcrumBase from '../../Components/Breadcrumb/BreadcrumBase';
 import { TableBase } from '../../Components/TableCp/TableBase';
 import { useEffect, useState } from 'react';
 import DanhMucService from './Service';
+import { CreateButton } from '../../Components/Button';
 type DanhMucType = {
   ten: string;
   icon: string;
@@ -19,7 +20,7 @@ export const DanhMucListComponent: React.FC = () => {
   }, []);
   const fetchData = async () => {
     const res = await DanhMucService.getAll();
-    setDataSource(res.data);
+    setDataSource(res.items);
   };
   useEffect(() => {
     setColumns([
@@ -57,6 +58,9 @@ export const DanhMucListComponent: React.FC = () => {
       <Row className="mt-2">
         <Col span={24}>
           <TableBase<DanhMucType>
+            ActionButton={
+              <CreateButton/>
+            }
             isSearch={true}
             columns={columns}
             dataSource={dataSource}

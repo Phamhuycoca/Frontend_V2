@@ -8,7 +8,7 @@ import { setData, setMeta, setTotal } from '../../stores/admin.nguoi_dung/admin.
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { CreateButton } from '../../Components/Button';
 import { NguoiDungModalComponent } from './NguoiDungModalComponent';
-import { lstLoaiTaiKhoan, type NguoiDungType } from './Const';
+import { lstGioiTinh, type NguoiDungType } from './Const';
 import { modalAlert, showModalConfirm } from '../../Common/helpers/Observable';
 
 export const NguoiDungListComponent: React.FC = () => {
@@ -30,7 +30,7 @@ export const NguoiDungListComponent: React.FC = () => {
       sort: sort,
     });
     if (res.success) {
-      dispatch(setData(res.data));
+      dispatch(setData(res.items));
       dispatch(setTotal(res.meta?.total || 0));
     }
     setLoading(false);
@@ -43,20 +43,20 @@ export const NguoiDungListComponent: React.FC = () => {
       },
       {
         title: 'Họ và tên',
-        dataIndex: 'full_name',
-        key: 'full_name',
+        dataIndex: 'ho_va_ten',
+        key: 'ho_va_ten',
       },
       {
-        title: 'Tài khoản',
-        dataIndex: 'tai_khoan',
-        key: 'tai_khoan',
+        title: 'Email',
+        dataIndex: 'email',
+        key: 'email',
       },
       {
-        title: 'Loại tài khoản',
-        dataIndex: 'is_loai_tai_khoan',
-        key: 'is_loai_tai_khoan',
+        title: 'Giới tính',
+        dataIndex: 'gioi_tinh',
+        key: 'gioi_tinh',
         render(record) {
-          return <span>{lstLoaiTaiKhoan.find((x) => x.value == record)?.label}</span>;
+          return <span>{lstGioiTinh.find((x) => x.value == record)?.label}</span>;
         },
       },
       {
@@ -141,7 +141,7 @@ export const NguoiDungListComponent: React.FC = () => {
                 label: 'Chọn trạng thái',
                 name: 'is_loai_tai_khoan',
                 type: 'select',
-                data: lstLoaiTaiKhoan,
+                data: lstGioiTinh,
               },
             ]}
             onChangeTable={({ page, pageSize, sort, filters, search }) => {

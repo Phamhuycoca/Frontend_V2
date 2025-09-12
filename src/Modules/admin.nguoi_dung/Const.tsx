@@ -1,19 +1,16 @@
 export type NguoiDungType = {
-  ho: string;
-  ten: string;
-  full_name: string;
-  is_admin: boolean;
-  mat_khau: string;
-  tai_khoan: string;
+  gioi_tinh: boolean;
+  ho_va_ten: string;
+  email: string;
   id: string;
 };
-export const lstLoaiTaiKhoan = [
+export const lstGioiTinh = [
   {
     value: true,
-    label: 'Đang hoạt động',
+    label: 'Nam',
   },
   {
     value: false,
-    label: 'Đã khóa',
+    label: 'Nữ',
   },
 ];
