@@ -1,4 +1,3 @@
-import type { ApiResponse } from '../../Common/interface';
 import BaseService from '../../shared/api/BaseService';
 
 class AuthServices extends BaseService {
@@ -7,11 +6,7 @@ class AuthServices extends BaseService {
   }
   async Login(userName: string, password: string): Promise<any> {
     try {
-      const res = await this.post(`Login`,{ userName, password });
-      if (res.success && res.data?.token) {
-        localStorage.setItem('token', res.data.token);
-      }
-      return res;
+      return await this.post(`Login`,{ userName, password });
     } catch (error: any) {
       return {
         statusCode: error?.response?.status,

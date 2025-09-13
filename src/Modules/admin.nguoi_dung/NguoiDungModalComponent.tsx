@@ -1,7 +1,7 @@
 import { Modal, Form, Row, Col, Input, Select, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import NguoiDungService from './Services';
-import { lstGioiTinh, type NguoiDungType } from './Const';
+import { lstGioiTinh, lstTrangThai, type NguoiDungType } from './Const';
 import { modalAlert } from '../../Common/helpers/Observable';
 type Props = {
   handleClose: () => void;
@@ -49,7 +49,7 @@ export const NguoiDungModalComponent: React.FC<Props> = ({ handleClose }) => {
             title: 'Thông báo',
             content: 'Cập nhật thông tin thành công!',
           });
-          handleClose();
+          closed();
           form.resetFields();
         }
       });
@@ -61,7 +61,7 @@ export const NguoiDungModalComponent: React.FC<Props> = ({ handleClose }) => {
             title: 'Thông báo',
             content: 'Thêm mới thông tin thành công!',
           });
-          handleClose();
+          closed();
           form.resetFields();
         }
       });
@@ -69,6 +69,7 @@ export const NguoiDungModalComponent: React.FC<Props> = ({ handleClose }) => {
     setIsOpen(false);
   };
   const closed = () => {
+    handleClose();
     setIsOpen(false);
     form.resetFields();
     NguoiDungService.resetModal();
@@ -90,7 +91,7 @@ export const NguoiDungModalComponent: React.FC<Props> = ({ handleClose }) => {
         }}
       >
         <Spin spinning={isLoading}>
-          <Form form={form} onFinish={onFinish}>
+          <Form form={form} onFinish={onFinish} layout="vertical">
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item name="ho_va_ten" label="Tên đây đủ">
@@ -110,6 +111,11 @@ export const NguoiDungModalComponent: React.FC<Props> = ({ handleClose }) => {
               <Col span={12}>
                 <Form.Item name="gioi_tinh" label="Giới tinh">
                   <Select options={lstGioiTinh} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item name="lockoutEnabled" label="Trạng thái">
+                  <Select options={lstTrangThai} />
                 </Form.Item>
               </Col>
             </Row>

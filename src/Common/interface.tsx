@@ -1,10 +1,20 @@
+import type { ModalType } from "./helpers/Observable";
+
 export interface RouteConfig {
   path: string;
   element: React.ReactNode;
   protected?: boolean | false;
   children?: RouteConfig[];
 }
-
+export interface InterfaceSelect{
+  value:string;
+  label:string;
+}
+export interface InterfaceTreeSelect{
+  value:string;
+  label:string;
+  children:InterfaceSelect[];
+}
 export type Item = {
   id: string | number;
   ten: string;
@@ -47,3 +57,11 @@ export type ItemTree = {
   ten: string;
   childrens: ItemTree[]
 };
+export interface MenuItem {
+  ten: string | null;
+  icon: string | null;
+  duong_dan: string | null;
+  so_thu_tu: number | null;
+  children?: MenuItem[];
+}
+export const initialModal: ModalType = { form: '', data: null };

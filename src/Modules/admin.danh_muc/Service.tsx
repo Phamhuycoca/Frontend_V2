@@ -1,19 +1,25 @@
-import { modalSubject } from '../../Common/helpers/Observable';
+import { BehaviorSubject, type Observable } from 'rxjs';
+import type { ModalType } from '../../Common/helpers/Observable';
 import BaseService from '../../shared/api/BaseService';
+import { initialModal } from '../../Common/interface';
 
 class DanhMucService extends BaseService {
+  private modalSubject = new BehaviorSubject<ModalType>({ form: '' });
+
   constructor() {
     super('danh-muc');
   }
-  setOpenModal(form: string) {
-    modalSubject.next({ form});
+  // Observable để component subscribe
+  get modal$(): Observable<ModalType> {
+    return this.modalSubject.asObservable();
   }
 
-  setCloseModal(form: string) {
-    const current = modalSubject.getValue();
-    if (current.form === form) {
-      modalSubject.next({ ...current});
-    }
+  // Mở modal và truyền data
+  setOpenModal<T = any>(form: string, data?: T) {
+    this.modalSubject.next({ form, data });
+  }
+  resetModal() {
+    this.modalSubject.next(initialModal);
   }
 }
 export default new DanhMucService();

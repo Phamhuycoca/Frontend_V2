@@ -10,6 +10,7 @@ import { CreateButton } from '../../Components/Button';
 import { NguoiDungModalComponent } from './NguoiDungModalComponent';
 import { lstGioiTinh, type NguoiDungType } from './Const';
 import { modalAlert, showModalConfirm } from '../../Common/helpers/Observable';
+import type { RootState } from '../../stores/store';
 
 export const NguoiDungListComponent: React.FC = () => {
   const [columns, setColumns] = useState<TableProps<NguoiDungType>['columns']>([]);
@@ -17,6 +18,9 @@ export const NguoiDungListComponent: React.FC = () => {
   const { data, meta, total } = useSelector((state: any) => state.nguoidung);
   const { page, page_size, sort, search, filter } = meta;
   const [loading, setLoading] = useState(false);
+  const menus = useSelector((state: RootState) => state.menu);
+  console.log('menus',menus);
+  
   useEffect(() => {
     fetchData();
   }, [page, page_size, sort, search, filter]);
@@ -60,13 +64,21 @@ export const NguoiDungListComponent: React.FC = () => {
         },
       },
       {
+        title: 'Trạng thái',
+        dataIndex: 'lockoutEnabled',
+        key: 'lockoutEnabled',
+        render(value) {
+          return <span>{!value ? 'Đang hoạt động':'Đã khóa'}</span>;
+        },
+      },
+      {
+        width:120,
         title: 'Hành động',
         align: 'center',
-        width: '15%',
         render(value) {
           return (
             <>
-              <Flex gap="small" wrap>
+              <Flex gap="small" wrap align='center' justify='center'>
                 <Button
                   variant="outlined"
                   size="small"
@@ -76,7 +88,6 @@ export const NguoiDungListComponent: React.FC = () => {
                     NguoiDungService.setOpenModal('category', { id: value.id });
                   }}
                 >
-                  Chỉnh sửa
                 </Button>
                 <Button
                   size="small"
@@ -98,7 +109,6 @@ export const NguoiDungListComponent: React.FC = () => {
                     }
                   }}
                 >
-                  Xóa
                 </Button>
               </Flex>
             </>

@@ -1,18 +1,30 @@
 import { useState } from 'react';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
-import {  Image, Layout, Menu } from 'antd';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { Image, Layout, Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../stores/store';
+import type { MenuItemType } from 'antd/es/menu/interface';
+import type { MenuItem } from '../../Common/interface';
+import { renderIcon } from '../../Components/Icon/IconCommon';
 
 const { Sider } = Layout;
 export const AdminSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
+  const { menus } = useSelector((state: RootState) => state.menu);
+
+  const convertMenu = (menus: MenuItem[]): MenuItemType[] => {
+    return menus.map((m, idx) => {
+      const hasChildren = Array.isArray(m.children) && m.children.length > 0;
+      return {
+        key: m.duong_dan || idx.toString(),
+        icon: renderIcon(m.icon ?? ''),
+        label: m.ten,
+        children: hasChildren ? convertMenu(m.children ?? []) : undefined,
+      };
+    });
+  };
   return (
     <Sider trigger={null} collapsible collapsed={collapsed} width={'12%'}>
       <div className="demo-logo-vertical">
@@ -37,7 +49,7 @@ export const AdminSidebar = () => {
           zIndex: 10,
           height: 50,
           width: 50,
-          cursor:'pointer'
+          cursor: 'pointer',
         }}
         onClick={() => setCollapsed(!collapsed)}
       >
@@ -47,26 +59,11 @@ export const AdminSidebar = () => {
         theme="dark"
         mode="inline"
         defaultSelectedKeys={['1']}
-        items={[
-          {
-            key: '1',
-            icon: <UserOutlined />,
-            onClick: () => navigate('/admin/danh-muc'),
-            label: 'nav 1',
-            
-          },
-          {
-            key: '2',
-            icon: <VideoCameraOutlined />,
-            label: 'nav 2',
-            onClick: () => navigate('/admin/nguoi-dung'),
-          },
-          {
-            key: '3',
-            icon: <UploadOutlined />,
-            label: 'nav 3',
-          },
-        ]}
+        onClick={(info) => {
+          console.log('clicked:', info.key);
+          navigate(info.key); // key chính là duong_dan
+        }}
+        items={convertMenu(menus)}
       />
     </Sider>
   );

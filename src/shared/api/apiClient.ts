@@ -1,4 +1,7 @@
 import axios, { type AxiosInstance } from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import { setMenus } from '../../stores/auth/menu.slice';
+import { store } from './../../stores/store';
 
 const apiClient: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -8,8 +11,6 @@ const apiClient: AxiosInstance = axios.create({
 // Thêm access token vào mỗi request
 apiClient.interceptors.request.use((config) => {
     const token = localStorage.getItem('access_token');
-    console.log('tokennnnnnnn',token);
-    
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -56,20 +57,26 @@ apiClient.interceptors.response.use(
 
             try {
                 const refreshToken = localStorage.getItem('refresh_token');
-                const res = await axios.post('/api/auth/refresh', { refreshToken });
-
-                const newToken = res.data.accessToken;
-                localStorage.setItem('access_token', newToken);
+                const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/nguoi-dung/RefreshToken`, { refresh_token:refreshToken });
+                console.log(res);
+                
+                const newToken = res.data.access_token;
+                localStorage.setItem('access_token', res.data.access_token);
+                localStorage.setItem('refresh_token', res.data.refresh_token);
 
                 apiClient.defaults.headers.common['Authorization'] = 'Bearer ' + newToken;
                 processQueue(null, newToken);
-
+                const decoded: any = jwtDecode(res.data.access_token);
+                    if (decoded.menu) {
+                    const menus = decoded.menu.map((item: string) => JSON.parse(item));
+                    store.dispatch(setMenus(menus));
+                    }
                 return apiClient(originalRequest); // retry request cũ
             } catch (err) {
                 processQueue(err, null);
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
-                window.location.href = '/login'; // logout
+                //window.location.href = '/login'; // logout
                 return Promise.reject(err);
             } finally {
                 isRefreshing = false;

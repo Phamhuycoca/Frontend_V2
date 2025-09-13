@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import BaseService from '../../shared/api/BaseService';
 import type { ModalType } from '../../Common/helpers/Observable';
-const initialModal: ModalType = { form: '', data: null };
+import { initialModal } from '../../Common/interface';
 
 class DanhMucService extends BaseService {
   private modalSubject = new BehaviorSubject<ModalType>({ form: '' });
@@ -21,6 +21,8 @@ class DanhMucService extends BaseService {
   }
   resetModal() {
     this.modalSubject.next(initialModal);
+    console.log('reset modal a');
+    
   }
 }
 

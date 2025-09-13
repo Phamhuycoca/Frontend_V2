@@ -1,3 +1,4 @@
+import { modalAlert } from '../../Common/helpers/Observable';
 import type { ApiResponse, PagedDataResponse } from '../../Common/interface';
 import apiClient from './apiClient';
 
@@ -30,9 +31,9 @@ class BaseService {
       return this.handleError(error);
     }
   }
-  async post(url: string = '', data: any): Promise<ApiResponse<any>> {
+  async post(url: string = '', data: any): Promise<any> {
     try {
-      const res = await apiClient.post<ApiResponse<any>>(`${this.endpoint}${url ? `/${url}` : ''}`, data);
+      const res = await apiClient.post<any>(`${this.endpoint}${url ? `/${url}` : ''}`, data);
       return res.data;
     } catch (error: any) {
       return this.handleError(error);
@@ -44,6 +45,12 @@ class BaseService {
       const res = await apiClient.put<ApiResponse<any>>(`${this.endpoint}/${id}`, data);
       return res.data;
     } catch (error: any) {
+      
+      modalAlert.next({
+        type: 'error',
+        title: 'Thông báo',
+        content: 'Có lỗi xảy ra, vui lòng thử lại!',
+      });
       return this.handleError(error);
     }
   }
@@ -70,6 +77,13 @@ class BaseService {
       const res = await apiClient.put<ApiResponse<any>>(`${this.endpoint}/${id}`, data);
       return res.data;
     } catch (error: any) {
+      console.log('error',error);
+
+       modalAlert.next({
+        type: 'error',
+        title: 'Thông báo',
+        content: error.response.data.errors|| 'Có lỗi xảy ra, vui lòng thử lại!',
+      });
       return this.handleError(error);
     }
   }

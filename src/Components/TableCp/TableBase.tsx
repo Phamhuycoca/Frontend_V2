@@ -57,7 +57,8 @@ export const TableBase = <T extends object>(props: PropTable<T>) => {
     arrFilterForm,
     ...rest
   } = props;
-
+  console.log('data',dataSource);
+  
   const [isShowFilter, setIsShowFilter] = useState<Boolean>(false);
   const [searchValue, setSearchValue] = useState(props.search || '');
   return (
